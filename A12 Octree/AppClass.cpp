@@ -10,7 +10,7 @@ void AppClass::InitVariables(void)
 
 	m_pBOMngr = MyBOManager::GetInstance();
 
-	m_nInstances = 1000;
+	m_nInstances = 3000;
 	for (int i = 0; i < m_nInstances; i++)
 	{
 			String sInstance = "Cube_" + std::to_string(i);
@@ -72,17 +72,36 @@ void AppClass::Display(void)
 	
 	m_pMeshMngr->PrintLine("F5 toggle collision methods", RERED);
 	m_pMeshMngr->PrintLine("F6 toggle Octree boxes", RERED);
+	m_pMeshMngr->PrintLine("F7 toggle Bounding boxes", RERED);
 
 	if (tree)
 	{
+		if (BOBox)
+			m_pBOMngr->DisplayTreeObject();
 		m_pMeshMngr->PrintLine("Octree", RERED);
 	}
 	else
 	{
+		if (BOBox)
+			m_pBOMngr->DisplayOriented();
 		m_pMeshMngr->PrintLine("Bruteforce", RERED);
 	}
+
+	m_pMeshMngr->Print("SO Structure:");
 	if (SOBox)
+	{
 		m_pBOMngr->DisplayTree();
+		m_pMeshMngr->PrintLine("ENABLED", RERED);
+	}
+	else
+		m_pMeshMngr->PrintLine("DISABLED", RERED);
+
+	m_pMeshMngr->Print("BO Boxes:");
+	if (BOBox)
+		m_pMeshMngr->PrintLine("ENABLED", RERED);
+	else
+		m_pMeshMngr->PrintLine("DISABLED", RERED);
+
 
 	m_pMeshMngr->Render(); //renders the render list
 

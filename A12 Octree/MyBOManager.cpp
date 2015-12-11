@@ -321,5 +321,5 @@ void MyBOManager::DisplayTree()
 
 void MyBOManager::DisplayTreeObject()
 {
-	m_pRoot->DrawObjects();
+	m_pRoot->DrawCollidedObjects();
 }

@@ -260,28 +260,37 @@ void MyOctant::CheckCollision()
 	}
 }
 
-void MyOctant::DrawObjects()
+void MyOctant::DrawCollidedObjects()
 {
 	//draws the object in red if they are in the colliding list
 	if (m_nChildren > 0)
 	{
 		for (int i = 0; i < m_nChildren; i++)
 		{
-			m_pChild[i]->DrawObjects();
+			m_pChild[i]->DrawCollidedObjects();
 		}
 	}
 	else
 	{
 		if (objectList.size() > 0)
 		{
-			for (int i = 0; i < objectList.size(); i++)
+			for (int j = 0; j < objectList.size(); j++)
 			{
-				objectList[i]->DisplayOriented(REWHITE);
+				bool colliding = false;
+				for (int i = 0; i < collidedIndex.size(); i++)
+				{
+					if (j == i)
+					{
+						colliding = true;
+						i = collidedIndex.size() + 1;
+					}
+				}
+				if (colliding)
+					objectList[j]->DisplayOriented(RERED);
+				else
+					objectList[j]->DisplayOriented(REWHITE);
 			}
-			for (int i = 0; i < collidedIndex.size(); i++)
-			{
-				objectList[collidedIndex[i]]->DisplayOriented(RERED);
-			}
+			
 		}
 	}
 }

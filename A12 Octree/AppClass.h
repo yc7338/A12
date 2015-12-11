@@ -18,6 +18,7 @@ class AppClass : public ReEngAppClass
 	MyBOManager* m_pBOMngr = nullptr;
 	bool tree = true;
 	bool SOBox = true;
+	bool BOBox = true;
 public:
 	typedef ReEngAppClass super;
 

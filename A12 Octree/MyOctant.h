@@ -99,7 +99,7 @@ public:
 
 	void AddObjectList(std::vector<MyBOClass*> list);
 
-	void DrawObjects();
+	void DrawCollidedObjects();
 
 private:
 	/*

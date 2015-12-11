@@ -51,6 +51,7 @@ void AppClass::ProcessKeyboard(void)
 	ON_KEY_PRESS_RELEASE(F4, NULL, m_pCameraMngr->SetCameraMode(CAMROTHOX));
 	ON_KEY_PRESS_RELEASE(F5, NULL, tree = !tree;);
 	ON_KEY_PRESS_RELEASE(F6, NULL, SOBox = !SOBox;);
+	ON_KEY_PRESS_RELEASE(F7, NULL, BOBox = !BOBox;);
 #pragma endregion
 }
 void AppClass::ProcessMouse(void)
