@@ -10,7 +10,7 @@ void AppClass::InitVariables(void)
 
 	m_pBOMngr = MyBOManager::GetInstance();
 
-	m_nInstances = 500;
+	m_nInstances = 1000;
 	for (int i = 0; i < m_nInstances; i++)
 	{
 			String sInstance = "Cube_" + std::to_string(i);
@@ -31,7 +31,7 @@ void AppClass::Update(void)
 	//Update the mesh manager's time without updating for collision detection
 	m_pMeshMngr->Update(false);
 
-		m_pBOMngr->Update(tree);
+	m_pBOMngr->Update(tree);
 
 	//First person camera movement
 	if (m_bFPC == true)
@@ -75,12 +75,10 @@ void AppClass::Display(void)
 
 	if (tree)
 	{
-		m_pBOMngr->DisplayTreeObject();
 		m_pMeshMngr->PrintLine("Octree", RERED);
 	}
 	else
 	{
-		m_pBOMngr->DisplayOriented();
 		m_pMeshMngr->PrintLine("Bruteforce", RERED);
 	}
 	if (SOBox)

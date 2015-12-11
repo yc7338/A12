@@ -270,7 +270,7 @@ void MyBOManager::SetupOctree()
 {
 	//get all of the max and min gs
 	std::vector<vector3> vertexList = std::vector<vector3>();
-	for (int i = 0; i < m_lObject.size(); i++)
+	for (uint i = 0; i < m_lObject.size(); i++)
 	{
 		vertexList.push_back(m_lObject[i]->GetMaxG());
 		vertexList.push_back(m_lObject[i]->GetMinG());
@@ -279,7 +279,7 @@ void MyBOManager::SetupOctree()
 	vector3 listMax = vertexList[0];
 	vector3 listMin = vertexList[0];
 
-	for (int i = 0; i < vertexList.size(); i++){
+	for (uint i = 0; i < vertexList.size(); i++){
 		if (vertexList[i].x > listMax.x)
 			listMax.x = vertexList[i].x;
 		else if (vertexList[i].x < listMin.x)

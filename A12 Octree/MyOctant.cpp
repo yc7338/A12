@@ -16,7 +16,7 @@ void MyOctant::Init(void)
 
 	MyOctant* m_pParent = nullptr;
 	
-	for (uint nChild = 0; nChild < 8; nChild++)
+	for (int nChild = 0; nChild < 8; nChild++)
 	{
 		m_pChild[nChild] = nullptr;
 	}
@@ -88,7 +88,7 @@ float MyOctant::GetSize(void) { return m_fSize; }
 //--- Non Standard Singleton Methods
 void MyOctant::DisplayBox(vector3 a_v3Color)
 {
-	for (uint nChild = 0; nChild < m_nChildren; nChild++)
+	for (int nChild = 0; nChild < m_nChildren; nChild++)
 	{
 		m_pChild[nChild]->DisplayBox(a_v3Color);
 	}
@@ -100,7 +100,7 @@ void MyOctant::Subdivide(void)
 {
 
 	m_nChildren = 8;
-	uint nIndex = 0;
+	int nIndex = 0;
 	float nNewSize = m_fSize / 2.0f;
 
 	vector3 vCenter = m_v3Center + vector3(nNewSize, nNewSize, nNewSize);
@@ -151,7 +151,7 @@ void MyOctant::Subdivide(void)
 	m_pChild[nIndex]->m_nLevel = m_nLevel + 1;
 }
 
-MyOctant* MyOctant::GetChild(uint nIndex)
+MyOctant* MyOctant::GetChild(int nIndex)
 {
 	if (nIndex < 0 || nIndex >7)
 		return nullptr;
@@ -160,11 +160,11 @@ MyOctant* MyOctant::GetChild(uint nIndex)
 
 void MyOctant::KillBranch()
 {
-	for (uint nChild = 0; nChild < m_nChildren; nChild++)
+	for (int nChild = 0; nChild < m_nChildren; nChild++)
 	{
 		m_pChild[nChild]->KillBranch();
 	}
-	for (uint nChild = 0; nChild < m_nChildren; nChild++)
+	for (int nChild = 0; nChild < m_nChildren; nChild++)
 	{
 		if (m_pChild[nChild] != nullptr)
 		{
@@ -184,7 +184,7 @@ void MyOctant::CheckSubdivision(){
 	// if more than three and the level is less than 3, subdivide
 	if (objectList.size() > 3 && m_nLevel < 3){
 		Subdivide();
-		for (uint i = 0; i < m_nChildren; i++){
+		for (int i = 0; i < m_nChildren; i++){
 			//add objects from parents
 			m_pChild[i]->AddToObjects();
 		}
@@ -195,6 +195,7 @@ void MyOctant::CheckSubdivision(){
 void MyOctant::AddToObjects(){
 	if (m_pParent != nullptr)
 	{
+		//add to child nodes if the object is in the node
 		for (int i = 0; i < m_pParent->GetObjects().size(); i++)
 		{
 			if (m_pBObj->IsColliding(m_pParent->GetObjects()[i]))
@@ -223,22 +224,36 @@ void MyOctant::CheckCollision()
 	// if the node has children go check collision within the children
 	if (m_nChildren > 0)
 	{
-		for (uint i = 0; i < m_nChildren; i++)
+		for (int i = 0; i < m_nChildren; i++)
 		{
 			m_pChild[i]->CheckCollision();
 		}
 	}
 	else if (objectList.size() > 0)
 	{
-		collidedIndex.clear();
+		collidedIndex.clear(); //clear the collided index
 		for (int i = 0; i < objectList.size() -1; i++)
 		{
 			for (int j = i + 1; j < objectList.size(); j++)
 			{
 				if (objectList[i]->IsColliding(objectList[j]))
 				{
-					collidedIndex.push_back(i);
-					collidedIndex.push_back(j);
+					bool iExists = false;
+					bool jExists = false;
+					
+					for (int k = 0; k < collidedIndex.size(); k++)
+					{
+						if (i == collidedIndex[k])
+							iExists = true;
+					
+						if (j == collidedIndex[k])
+							jExists = true;
+					}
+					//only push it to the idex if it didn't already exist
+					if (!iExists)
+						collidedIndex.push_back(i);
+					if (!jExists)
+						collidedIndex.push_back(j);
 				}
 			}
 		}
@@ -247,9 +262,10 @@ void MyOctant::CheckCollision()
 
 void MyOctant::DrawObjects()
 {
+	//draws the object in red if they are in the colliding list
 	if (m_nChildren > 0)
 	{
-		for (uint i = 0; i < m_nChildren; i++)
+		for (int i = 0; i < m_nChildren; i++)
 		{
 			m_pChild[i]->DrawObjects();
 		}
@@ -272,6 +288,7 @@ void MyOctant::DrawObjects()
 
 void MyOctant::AddObjectList(std::vector<MyBOClass*> list)
 {
+	// if this is the root, add the list to the object list
 	if (m_pParent == nullptr)
 	{
 		for (int i = 0; i < list.size(); i++)

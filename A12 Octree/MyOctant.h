@@ -11,11 +11,11 @@ Date: 2015/11
 //System Class
 class MyOctant
 {
-	uint m_nChildren = 0;
+	int m_nChildren = 0;
 	MyOctant* m_pParent = nullptr;
 	MyOctant* m_pChild[8];
 
-	uint m_nLevel;
+	int m_nLevel;
 
 	float m_fSize = 0.0f; //Size of the octant
 
@@ -79,7 +79,7 @@ public:
 
 	void Subdivide(void);
 
-	MyOctant* GetChild(uint nIndex);
+	MyOctant* GetChild(int nIndex);
 
 	void SetParent(MyOctant* a_pParent);
 
